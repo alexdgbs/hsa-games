@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2  # Actualizado de master a v2
 
       - name: Setup node env 🏗
         uses: actions/setup-node@v3.0.0
@@ -32,13 +32,13 @@ jobs:
       - name: Get yarn cache directory path 🛠
         id: yarn-cache-dir-path
         run: |
-          echo "dir=$(yarn cache dir)" >> $GITHUB_ENV
+          echo "dir=$(yarn cache dir)" >> $GITHUB_ENV  # Actualización para evitar `set-output`
 
       - name: Cache node_modules 📦
-        uses: actions/cache@v3
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        uses: actions/cache@v3  # Actualización a v3
+        id: yarn-cache  # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          path: ${{ env.dir }}
+          path: ${{ env.dir }}  # Ajuste del path
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
@@ -47,6 +47,8 @@ jobs:
         run: yarn
 
       - name: Run tests 🧪
+        run: yarn test
+
         run: yarn test
 
 
