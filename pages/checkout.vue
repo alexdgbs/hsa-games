@@ -1,75 +1,97 @@
 <template>
-    <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold mb-6 text-gray-800 text-center">Suscribirse</h2>
-      
-      <div class="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6">
-        <form @submit.prevent="checkout" id="payment-form">
-          <div id="card-element" class="bg-gray-100 p-4 rounded-md mb-4 border border-gray-300"></div>
-          
-          <button 
-            type="submit" 
-            class="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full"
-          >
-            Pagar con tarjeta
-          </button>
-          
-          <div id="card-errors" class="text-red-600 mt-2 text-sm"></div>
-        </form>
+  <div class="relative z-0 bg-white flex items-center justify-center py-6 px-2 sm:px-4 lg:px-6">
+    <div class="max-w-sm w-full space-y-6">
+      <div>
+        <h2 class="text-center text-2xl font-semibold text-gray-900">Suscríbete por solo $49</h2>
+        <p class="mt-1 text-center text-xs text-gray-600">
+          Elige el método de pago y accede a contenido exclusivo.
+        </p>
+      </div>
+      <div class="bg-gray-100 py-4 px-2 shadow sm:rounded-lg sm:px-6">
+        <h3 class="text-lg font-medium text-gray-700 text-center mb-4">Métodos de Pago</h3>
+        <div id="paypal-button-container" class="mt-2 relative z-10"></div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        stripe: null,
-        cardElement: null
-      };
-    },
-    mounted() {
-      
-      this.stripe = window.Stripe('pk_test_51PwyqZ02vVZvxUTMtJ93GyAfsDZVVckeLbjZP2BfqtfiUqn0wZmEzR98NkIba7kv52kZV455uYCq24QKmid7NnFu00YPdFperq'); 
-      const elements = this.stripe.elements();
-      
-      
-      this.cardElement = elements.create('card');
-      this.cardElement.mount('#card-element');
-    },
-    methods: {
-      async checkout() {
-        try {
-       
-          const {token, error} = await this.stripe.createToken(this.cardElement);
-          
-          if (error) {
-            document.getElementById('card-errors').textContent = error.message;
-          } else {
-            
-            const response = await fetch('/api/create-checkout-session', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ token: token.id }),
-            });
-  
-            const session = await response.json();
-            
-        
-            const {error: redirectError} = await this.stripe.redirectToCheckout({ sessionId: session.id });
-            
-            if (redirectError) {
-              alert('Error en el proceso de pago: ' + redirectError.message);
-            }
-          }
-        } catch (error) {
-          console.error('Error creando la sesión de pago:', error);
-        }
+    <div class="absolute inset-0 bg-transparent" style="z-index: 5;"></div>
+  </div>
+</template>
+
+<script>
+export default {
+  mounted() {
+    const script = document.createElement('script');
+    script.src = "https://www.paypal.com/sdk/js?client-id=AXQeb763-UfMzlLsheOGAQdXyM-xzZ4MPxXXZAaZ44MQT-7bWdbDuiRxl6-gwxuCgXf6Jnc0LKSdL1vk&currency=MXN";
+    script.addEventListener('load', this.renderPayPalButton);
+    document.body.appendChild(script);
+  },
+  methods: {
+    renderPayPalButton() {
+      if (!window.paypal) {
+        console.error('PayPal SDK no está cargado.');
+        return;
       }
+      window.paypal.Buttons({
+        createOrder: (data, actions) => {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: '49.00'
+              }
+            }]
+          });
+        },
+        onApprove: (data, actions) => {
+          return actions.order.capture().then(details => {
+            alert('Transacción completada por ' + details.payer.name.given_name);
+          });
+        },
+        onError: (err) => {
+          console.error('Error en el proceso de pago:', err);
+        }
+      }).render('#paypal-button-container');
     }
   }
-  </script>
-  
-  <style scoped>
+}
+</script>
 
-  </style>
-  
+<style scoped>
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+h2 {
+  color: #1F2937;
+  font-size: 1.25rem; 
+}
+
+h3 {
+  color: #374151;
+  font-size: 1rem; 
+}
+
+.bg-white {
+  background-color: white;
+}
+
+#paypal-button-container {
+  display: flex;
+  justify-content: center;
+  z-index: 10; 
+}
+
+.bg-gray-100 {
+  padding: 0.5rem; 
+}
+
+.space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+.flex {
+  margin-top: 1rem; 
+}
+
+.menu {
+  z-index: 50; 
+}
+</style>

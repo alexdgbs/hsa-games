@@ -1,88 +1,100 @@
 <template>
-    <div class="flex items-center justify-center h-screen bg-white">
-      <div class="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
-        <h2 class="text-2xl font-semibold mb-6 text-center">Iniciar sesión</h2>
-        <form @submit.prevent="handleLogin">
-          <div class="mb-4">
+  <section class="bg-white py-6 flex items-center justify-center"> 
+    <div class="w-full max-w-xs bg-white rounded-lg"> 
+      <div class="p-4 space-y-4 sm:p-4"> 
+        <h2 class="text-lg font-bold leading-tight text-gray-900 text-left">Inicia sesión</h2>
+        <form @submit.prevent="handleLogin" class="space-y-2"> 
+          <div>
             <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
             <input
               type="email"
               id="email"
               v-model="email"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Ingrese su correo electrónico"
+              class="mt-1 block w-full px-2 py-1 text-sm border border-gray-300 rounded-lg text-gray-900 bg-gray-50"
+              placeholder="8hsabitgames@gmail.com"
               required
             />
           </div>
-          <div class="mb-6">
+          <div>
             <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
             <input
               type="password"
               id="password"
               v-model="password"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Ingrese su contraseña"
+              class="mt-1 block w-full px-2 py-1 text-sm border border-gray-300 rounded-lg text-gray-900 bg-gray-50"
+              placeholder="********"
               required
             />
           </div>
           <button
             type="submit"
             :disabled="isSubmitting"
-            class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            class="w-full bg-sky-400 text-white font-medium rounded-lg text-sm px-3 py-2 hover:bg-sky-500"
           >
-            Iniciar sesión
+            Continuar
           </button>
-          <p v-if="errorMessage" class="mt-4 text-red-600 text-center">{{ errorMessage }}</p>
+          <p v-if="errorMessage" class="mt-2 text-red-600 text-center">{{ errorMessage }}</p>
+          <p class="text-xs text-gray-500 text-center">
+            ¿No tienes una cuenta? <nuxt-link to="/register" class="text-sky-600 hover:underline">Crea una cuenta</nuxt-link>
+          </p>
         </form>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        email: '',
-        password: '',
-        isSubmitting: false,
-        errorMessage: '',
-      };
-    },
-    methods: {
-      async handleLogin() {
-        this.isSubmitting = true;
-        this.errorMessage = '';
+  </section>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      isSubmitting: false,
+      errorMessage: '',
+    };
+  },
+  methods: {
+    async handleLogin() {
+      this.isSubmitting = true;
+      this.errorMessage = '';
+      
+      try {
+        const response = await fetch('http://localhost:3001/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: this.email,
+            password: this.password,
+          }),
+        });
         
-        try {
-          const response = await fetch('http://localhost:3000/api/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: this.email,
-              password: this.password,
-            }),
-          });
-          
-          if (response.ok) {
-            this.$router.push('/dashboard'); // Cambiar la ruta según tu aplicación
-          } else {
-            const data = await response.json();
-            this.errorMessage = data.message || 'Error al iniciar sesión';
-          }
-        } catch (error) {
-          this.errorMessage = 'Error de red. Inténtalo de nuevo.';
-        } finally {
-          this.isSubmitting = false;
+        if (response.ok) {
+          const data = await response.json();
+          this.$cookies.set('token', data.token); 
+          this.$router.push('/dashboard'); 
+        } else {
+          const data = await response.json();
+          this.errorMessage = data.message || 'Error al iniciar sesión';
         }
-      },
+      } catch (error) {
+        this.errorMessage = 'Error de red. Inténtalo de nuevo.';
+      } finally {
+        this.isSubmitting = false;
+      }
     },
-  };
-  </script>
-  
-  <style scoped>
-  
-  </style>
-  
-  
+  },
+};
+</script>
+
+<style scoped>
+input, button {
+  transition: all 0.2s ease-in-out;
+}
+
+input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+</style>

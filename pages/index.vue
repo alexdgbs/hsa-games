@@ -1,7 +1,6 @@
 <template>
   <div>
     <HeroSection />
-    <!-- Puedes incluir otros componentes o contenido específico de la página de inicio aquí -->
   </div>
 </template>
 
@@ -16,6 +15,6 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos específicos para la página de inicio (si es necesario) */
+
 </style>
 

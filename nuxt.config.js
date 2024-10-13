@@ -1,5 +1,4 @@
 export default {
-  // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'hsa-games',
     htmlAttrs: {
@@ -13,36 +12,47 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
+    ],
+    script: [
+      
     ]
   },
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
+
   css: [
+   
   ],
 
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+   
   ],
 
-  // Auto import components: https://go.nuxtjs.dev/config-components
+
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
+  
   buildModules: [
-    // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss',
+    '@nuxt/postcss8', 
+    '@nuxtjs/tailwindcss', 
   ],
 
-  // Modules: https://go.nuxtjs.dev/config-modules
+  
   modules: [
+  
   ],
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
+  
   build: {
+ 
   },
 
-  // Server Middleware Configuration
+
   serverMiddleware: [
-    { path: '/api', handler: '~/server/index.js' }
-  ]
+    { path: '/api', handler: '~/server/server.js' } 
+  ],
+
+  server: {
+    port: 3000, 
+    host: 'localhost' 
+  }
 }
