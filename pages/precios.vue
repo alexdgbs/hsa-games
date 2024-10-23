@@ -60,7 +60,8 @@
                 <span class="text-4xl font-bold tracking-tight text-gray-900">$49</span>
                 <span class="text-xs font-semibold leading-5 tracking-wide text-gray-600">MX</span>
               </p>
-              <a href="/login" class="mt-8 block w-full rounded-md bg-sky-400 px-3 py-2 text-center text-xs font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Suscribirme</a>
+              
+              <button @click="handleSubscription" class="mt-8 block w-full rounded-md bg-sky-400 px-3 py-2 text-center text-xs font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Suscribirme</button>
               <p class="mt-4 text-xs leading-4 text-gray-600">Retro-Arcade</p>
             </div>
           </div>
@@ -73,6 +74,19 @@
 <script>
 export default {
   name: 'Pricing',
+  methods: {
+    handleSubscription() {
+      
+      const emailExists = document.cookie.split(';').some((item) => item.trim().startsWith('email='));
+      if (emailExists) {
+        
+        window.location.href = '/checkout';
+      } else {
+        
+        window.location.href = '/login';
+      }
+    }
+  }
 };
 </script>
 

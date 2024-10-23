@@ -8,7 +8,21 @@
 <script>
 export default {
   mounted() {
-    if (window.paypal) {
+    
+    const script = document.createElement('script');
+    script.src = "https://www.paypal.com/sdk/js?client-id=AXQeb763-UfMzlLsheOGAQdXyM-xzZ4MPxXXZAaZ44MQT-7bWdbDuiRxl6-gwxuCgXf6Jnc0LKSdL1vk&currency=MXN";
+    script.onload = () => {
+      this.initializePayPalButton();
+    };
+    document.body.appendChild(script);
+  },
+  methods: {
+    initializePayPalButton() {
+      if (!window.paypal) {
+        console.error('PayPal SDK no está cargado.');
+        return;
+      }
+
       window.paypal.Buttons({
         createOrder: (data, actions) => {
           return actions.order.create({
@@ -20,17 +34,23 @@ export default {
           });
         },
         onApprove: (data, actions) => {
-          return actions.order.capture().then(function(details) {
+          return actions.order.capture().then((details) => {
             alert('Transacción completada por ' + details.payer.name.given_name);
+            
           });
         },
         onError: (err) => {
           console.error('Error en el proceso de pago:', err);
+          alert('Hubo un problema procesando tu pago. Por favor, inténtalo de nuevo más tarde.');
         }
       }).render('#paypal-button-container');
-    } else {
-      console.error('PayPal SDK no está cargado.');
     }
   }
 }
 </script>
+
+<style scoped>
+.container {
+  max-width: 600px; 
+}
+</style>

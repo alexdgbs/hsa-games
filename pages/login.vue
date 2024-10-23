@@ -29,13 +29,13 @@
           <button
             type="submit"
             :disabled="isSubmitting"
-            class="w-full bg-sky-400 text-white font-medium rounded-lg text-sm px-3 py-2 hover:bg-sky-500"
+            class="w-full bg-slate-100 text-black font-medium rounded-lg text-sm px-3 py-2 hover:bg-slate-200"
           >
             Continuar
           </button>
           <p v-if="errorMessage" class="mt-2 text-red-600 text-center">{{ errorMessage }}</p>
           <p class="text-xs text-gray-500 text-center">
-            ¿No tienes una cuenta? <nuxt-link to="/register" class="text-sky-600 hover:underline">Crea una cuenta</nuxt-link>
+            ¿No tienes una cuenta? <nuxt-link to="/register" class="text-sky-800 hover:underline">Crea una cuenta</nuxt-link>
           </p>
         </form>
       </div>
@@ -54,36 +54,44 @@ export default {
     };
   },
   methods: {
+
     async handleLogin() {
-      this.isSubmitting = true;
-      this.errorMessage = '';
-      
-      try {
-        const response = await fetch('http://localhost:3001/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: this.email,
-            password: this.password,
-          }),
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          this.$cookies.set('token', data.token); 
-          this.$router.push('/dashboard'); 
-        } else {
-          const data = await response.json();
-          this.errorMessage = data.message || 'Error al iniciar sesión';
-        }
-      } catch (error) {
-        this.errorMessage = 'Error de red. Inténtalo de nuevo.';
-      } finally {
-        this.isSubmitting = false;
-      }
-    },
+  this.isSubmitting = true;
+  this.errorMessage = '';
+
+  try {
+    const response = await fetch('http://localhost:3001/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: this.email,
+        password: this.password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Error al iniciar sesión');
+    }
+
+    document.cookie = `email=${data.email}; path=/;`;
+    document.cookie = `isSubscribed=${data.isSubscribed}; path=/;`;
+
+    
+    this.$router.push('/');
+   
+    window.dispatchEvent(new Event('storage'));
+
+  } catch (error) {
+    this.errorMessage = error.message || 'Error de red. Inténtalo de nuevo.';
+  } finally {
+    this.isSubmitting = false;
+  }
+},
+
   },
 };
 </script>

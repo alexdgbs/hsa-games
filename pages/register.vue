@@ -48,16 +48,16 @@
               class="w-4 h-4 border-gray-300 rounded" 
               required
             >
-            <label for="terms" class="ml-2 text-sm text-gray-600">Acepto los <a href="#" class="text-sky-600 hover:underline">términos</a></label>
+            <label for="terms" class="ml-2 text-sm text-gray-600">Acepto los <a href="#" class="text-sky-800 hover:underline">términos</a></label>
           </div>
           <button 
             type="submit" 
-            class="w-full bg-sky-400 text-white font-medium rounded-lg text-sm px-3 py-2 hover:bg-sky-500"
+            class="w-full bg-slate-100 text-black font-medium rounded-lg text-sm px-3 py-2 hover:bg-slate-200"
           >
             Crear cuenta
           </button>
           <p class="text-xs text-gray-500">
-            ¿Ya tienes una cuenta? <a href="/login" class="text-sky-600 hover:underline">Inicia sesión</a>
+            ¿Ya tienes una cuenta? <a href="/login" class="text-sky-800 hover:underline">Inicia sesión</a>
           </p>
         </form>
       </div>

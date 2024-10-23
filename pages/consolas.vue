@@ -1,77 +1,35 @@
 <template>
-  <section class="text-center pt-5 bg-white mx-auto my-5 max-w-7xl">
-    <h2 class="text-xl font-bold mb-12 text-gray-900">Consolas</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <nuxt-link
-        to="/psp"
-        class="transition-transform transform hover:scale-105 bg-white shadow-lg rounded-lg p-6 flex flex-col items-center border border-gray-300 hover:shadow-xl"
-      >
-        <img
-          src="/img/psp.png"
-          alt="PlayStation Portable PSP"
-          class="mx-auto w-28 h-auto mb-4"
-        />
-        <h3 class="text-1x1 font-semibold text-gray-800">PlayStation Portable</h3>
+  <section class="consolas-container">
+    <h2 class="text-xl font-bold text-gray-900">Consolas</h2>
+    <p class="text-slate-500 mb-6 text-sm py-5">Explora las consolas clásicas y revive la nostalgia de los mejores videojuegos.</p>
+
+    <div class="emulador-grid">
+      
+      <nuxt-link to="/psp" class="emulador-card">
+        <img src="/img/psp-consoles.png" alt="PlayStation Portable" class="emulador-imagen" />
       </nuxt-link>
 
-      <nuxt-link
-        to="/gamecube"
-        class="transition-transform transform hover:scale-105 bg-white shadow-lg rounded-lg p-6 flex flex-col items-center border border-gray-300 hover:shadow-xl"
-      >
-        <img
-          src="/img/nintendogamecube.png"
-          alt="Nintendo Gamecube"
-          class="mx-auto w-28 h-auto mb-4"
-        />
-        <h3 class="text-1x1 font-semibold text-gray-800">Nintendo Gamecube</h3>
+   
+      <nuxt-link to="/gamecube" class="emulador-card">
+        <img src="/img/gamecube-consoles.png" alt="Nintendo Gamecube" class="emulador-imagen" />
       </nuxt-link>
 
-      <nuxt-link
-        to="/n64"
-        class="transition-transform transform hover:scale-105 bg-white shadow-lg rounded-lg p-6 flex flex-col items-center border border-gray-300 hover:shadow-xl"
-      >
-        <img
-          src="/img/nintendo64.png"
-          alt="Nintendo 64"
-          class="mx-auto w-28 h-auto mb-4"
-        />
-        <h3 class="text-1x1 font-semibold text-gray-800">Nintendo 64</h3>
+      
+      <nuxt-link to="/n64" class="emulador-card">
+        <img src="/img/n64-consoles.png" alt="Nintendo 64" class="emulador-imagen" />
       </nuxt-link>
 
-      <nuxt-link
-        to="/gba"
-        class="transition-transform transform hover:scale-105 bg-white shadow-lg rounded-lg p-6 flex flex-col items-center border border-gray-300 hover:shadow-xl"
-      >
-        <img
-          src="/img/gameboyadvance.png"
-          alt="Gameboy Advance"
-          class="mx-auto w-28 h-auto mb-4"
-        />
-        <h3 class="text-1x1 font-semibold text-gray-800">Gameboy Advance</h3>
+      
+      <nuxt-link to="/gba" class="emulador-card">
+        <img src="/img/gba-consoles.png" alt="Gameboy Advance" class="emulador-imagen" />
       </nuxt-link>
 
-      <nuxt-link
-        to="/snes"
-        class="transition-transform transform hover:scale-105 bg-white shadow-lg rounded-lg p-6 flex flex-col items-center border border-gray-300 hover:shadow-xl"
-      >
-        <img
-          src="/img/nes.png"
-          alt="Super Nintendo"
-          class="mx-auto w-28 h-auto mb-4"
-        />
-        <h3 class="text-1x1 font-semibold text-gray-800">Super Nintendo</h3>
+      <nuxt-link to="/snes" class="emulador-card">
+        <img src="/img/snes-consoles.png" alt="Super Nintendo" class="emulador-imagen" />
       </nuxt-link>
 
-      <nuxt-link
-        to="/ps2"
-        class="transition-transform transform hover:scale-105 bg-white shadow-lg rounded-lg p-6 flex flex-col items-center border border-gray-300 hover:shadow-xl"
-      >
-        <img
-          src="/img/ps2.png"
-          alt="Playstation 2"
-          class="mx-auto w-28 h-auto mb-4"
-        />
-        <h3 class="text-1x1 font-semibold text-gray-800">Playstation 2</h3>
+      <nuxt-link to="/ps2" class="emulador-card">
+        <img src="/img/ps2-consoles.png" alt="Playstation 2" class="emulador-imagen" />
       </nuxt-link>
     </div>
   </section>
@@ -79,17 +37,87 @@
 
 <script>
 export default {
-  name: "ConsolasSection",
+  name: "ConsoleMenu",
 };
 </script>
 
 <style scoped>
-.shadow-lg {
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+.consolas-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px; 
+  text-align: center;
+  animation: fadeIn 0.5s ease-in; 
 }
 
-.border {
-  border-width: 1px;
-  border-color: rgba(0, 0, 0, 0.1);
+.emulador-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); 
+  gap: 20px; 
+}
+
+.emulador-card {
+  position: relative; 
+  width: 120px; 
+  height: 120px; 
+  background-color: #ffffff; 
+  border-radius: 90px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: box-shadow 0.3s; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  overflow: hidden; 
+}
+
+.emulador-card::after {
+  content: '';
+  position: absolute;
+  bottom: -10px; 
+  left: 0;
+  right: 0;
+  height: 100%; 
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0)); 
+  transform: scaleY(-1); 
+  opacity: 0.3; 
+  pointer-events: none; 
+}
+
+
+
+.emulador-imagen {
+  width: 60%; 
+  height: auto;
+  transition: transform 0.3s; 
+}
+
+.emulador-card:hover .emulador-imagen {
+  transform: rotate(0deg) scale(1.1); 
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px); 
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@media (max-width: 640px) {
+  .emulador-card {
+    width: 100px; 
+    height: 100px; 
+  }
+
+  .emulador-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); 
+  }
 }
 </style>
+
