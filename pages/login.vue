@@ -59,8 +59,10 @@ export default {
   this.isSubmitting = true;
   this.errorMessage = '';
 
+  const baseUrl = process.env.NODE_ENV === 'production' ? 'http://hsa-games.com' : 'http://localhost:3001';
+
   try {
-    const response = await fetch('http://localhost:3001/api/login', {
+    const response = await fetch(`${baseUrl}/api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +82,6 @@ export default {
     document.cookie = `email=${data.email}; path=/;`;
     document.cookie = `isSubscribed=${data.isSubscribed}; path=/;`;
 
-    
     this.$router.push('/');
    
     window.dispatchEvent(new Event('storage'));
@@ -91,7 +92,6 @@ export default {
     this.isSubmitting = false;
   }
 },
-
   },
 };
 </script>

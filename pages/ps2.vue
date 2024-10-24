@@ -18,7 +18,7 @@
           <p class="text-xs">{{ game.description }}</p>
           <button
             v-if="isSubscribed || isAdmin"
-            class="mt-1 bg-slate-50 text-sky-800 text-xs"
+            class="mt-1 bg-white text-sky-800 text-xs"
             @click="downloadGame(game)"
           >
             Descargar
@@ -37,14 +37,14 @@
         isAdmin: false,
         isSubscribed: false,
         games: [
-  { id: 1, name: 'Grand Theft Auto: Vice City', cover: '/img/ps2-gtavicecity.jpg', downloadLink: 'http://example.com/download/gtavicecity', description: 'Acción' },
-  { id: 2, name: 'WWE SmackDown vs. Raw 2011', cover: '/img/ps2-wwe2011.jpg', downloadLink: 'http://example.com/download/wwe2011', description: 'Lucha' },
-  { id: 3, name: 'Midnight Club 3 - DUB Edition', cover: '/img/ps2-midnightclub3.jpg', downloadLink: 'http://example.com/download/midnightclub3', description: 'Carreras' },
-  { id: 4, name: 'Guitar Hero III – Legends of Rock', cover: '/img/ps2-Guitar-Hero-III-Legends-of-Rock.jpg', downloadLink: 'http://example.com/download/guitarhero3', description: 'Música' },
-  { id: 5, name: 'Grand Theft Auto III', cover: '/img/ps2-grand_theft_auto3.jpg', downloadLink: 'http://example.com/download/gtaiii', description: 'Acción' },
-  { id: 6, name: 'ATV Offroad Fury 4', cover: '/img/atv-offroad-fury-4-ps2.jpg', downloadLink: 'http://example.com/download/atvoffroad', description: 'Carreras' },
-  { id: 7, name: 'God Of War', cover: '/img/ps2-godofwar.jpg', downloadLink: 'http://example.com/download/godofwar', description: 'Acción/RPG' },
-  { id: 8, name: 'Dragon Ball Z: Budokai Tenkaichi 2', cover: '/img/ps2-Dragon-Ball-Z-Budokai-Tenkaichi.jpg', downloadLink: 'http://example.com/download/tenkaichi2', description: 'Lucha' },
+  { id: 1, name: 'True Crime Streets of LA', cover: '/img/true-crime-streets-of-la.jpg', downloadLink: 'https://sto.romsfast.com/PS2-Redump/True%20Crime%20-%20Streets%20of%20LA%20(USA).zip?token=c3xZcltjWVFOEHJxU3dYYQtbFkJ5IlN8UmYKWxUWc3ZTcFRgWx1FFnN9UXZZZ19T', description: 'Acción' },
+  { id: 2, name: 'Gun', cover: '/img/Gun.jpg', downloadLink: 'https://sto.romsfast.com/PS2-Redump/Gun%20(USA).zip?token=cHNealNkUU9FF3lqXH0dYV9TTRlzfFF0Vg%3D%3D', description: 'Acción' },
+  { id: 3, name: 'Black', cover: '/img/Black.jpg', downloadLink: 'https://sto.romsfast.com/PS2-Redump/Black%20(USA).zip?token=cHNealNkUU9FF3lqXH0dYV9TTRlzfFFxVQ%3D%3D', description: 'Shooter' },
+  { id: 4, name: 'The Warriors', cover: '/img/Warriors,+The+(USA)+(En,Fr,De,Es,It)-image.jpg', downloadLink: 'https://sto.romsfast.com/PS2-CHD/Warriors%20The%20(USA)%20(EnFrDeEsIt).chd?token=cHNealNkUU9FF3lqXH0dYV9TTRlzfFFzUg%3D%3D', description: 'Acción' },
+  { id: 5, name: 'OutRun 2006: Coast 2 Coast', cover: '/img/outrun-2006-coast-2-coast.jpg', downloadLink: 'https://sto.romsfast.com/PS2-Redump/OutRun%202006%20-%20Coast%202%20Coast%20(USA)%20(EnFrEs).zip?token=cHNealNkUU9FF3lqXH0dYV9TTRlzfFBxUA%3D%3D', description: 'Carreras' },
+  { id: 6, name: 'Burnout 3: Takedown', cover: '/img/burnout-3-takedown.jpg', downloadLink: 'https://sto.romsfast.com/PS2-Redump/Burnout%203%20-%20Takedown%20(USA).zip?token=cHNealNkUU9FF3lqXH0dYV9TTRlzfFB8UQ%3D%3D', description: 'Carreras' },
+  { id: 7, name: 'Mark of Kri', cover: '/img/the-mark-of-kri.jpg', downloadLink: 'https://sto.romsfast.com/PS2-CHD/Mark%20of%20Kri%20The%20(USA).chd?token=cHNealNkUU9FF3lqXH0dYV9TTRlzfVlwWQ%3D%3D', description: 'Acción' },
+  { id: 8, name: 'Urban Reign', cover: '/img/urban-reign.jpg', downloadLink: 'https://sto.romsfast.com/PS2-CHD/Urban%20Reign%20(USA).chd?token=cHNealNkUU9FF3lqXH0dYV9TTRlzfVlwVA%3D%3D', description: 'Lucha' },
 ],
 
       };
@@ -60,17 +60,19 @@
     },
     methods: {
       async getUserInfo(email) {
-        try {
-          const response = await fetch(`http://localhost:3001/api/user?email=${email}`);
-          if (!response.ok) {
-            throw new Error('Error en la respuesta de la API');
-          }
-          const userData = await response.json();
-          this.isSubscribed = userData.isSubscribed; 
-        } catch (error) {
-          console.error('Error al obtener la información del usuario:', error);
-        }
-      },
+  const baseUrl = process.env.NODE_ENV === 'production' ? 'http://hsa-games.com' : 'http://localhost:3001';
+  
+  try {
+    const response = await fetch(`${baseUrl}/api/user?email=${email}`);
+    if (!response.ok) {
+      throw new Error('Error en la respuesta de la API');
+    }
+    const userData = await response.json();
+    this.isSubscribed = userData.isSubscribed;
+  } catch (error) {
+    console.error('Error al obtener la información del usuario:', error);
+  }
+},
       downloadGame(game) {
         window.location.href = game.downloadLink; 
       },

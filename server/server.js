@@ -11,7 +11,7 @@ import paypal from 'paypal-rest-sdk';
 import User from '../models/User.js';
 import cors from 'cors';
 import helmet from 'helmet';
-import fetch from 'node-fetch'; // Asegúrate de tener node-fetch instalado
+import fetch from 'node-fetch'; 
 
 const app = express();
 app.use(express.json());
@@ -21,7 +21,7 @@ app.use(cors({
 }));
 app.use(helmet());
 
-// Función para obtener el token de acceso
+
 async function getAccessToken() {
   const response = await fetch('https://api.sandbox.paypal.com/v1/oauth2/token', {
     method: 'POST',
@@ -36,7 +36,7 @@ async function getAccessToken() {
   return data.access_token;
 }
 
-// Endpoint para cancelar la suscripción
+
 app.post('/api/cancel-subscription', async (req, res) => {
   const { subscriptionId } = req.body;
 
@@ -45,14 +45,14 @@ app.post('/api/cancel-subscription', async (req, res) => {
   }
 
   try {
-    const accessToken = await getAccessToken(); // Obtener el token de acceso
+    const accessToken = await getAccessToken(); 
     const response = await fetch(`https://api.sandbox.paypal.com/v1/billing/subscriptions/${subscriptionId}/cancel`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}` // Usar el token de acceso
+        Authorization: `Bearer ${accessToken}` 
       },
-      body: JSON.stringify({ reason: 'Cancelación de la suscripción' }) // Razón opcional
+      body: JSON.stringify({ reason: 'Cancelación de la suscripción' })
     });
 
     if (!response.ok) {
@@ -66,7 +66,6 @@ app.post('/api/cancel-subscription', async (req, res) => {
   }
 });
 
-// Otros endpoints...
 app.get('/api/user', async (req, res) => {
   const { email } = req.query;
 
@@ -120,7 +119,6 @@ app.post('/api/subscribe', async (req, res) => {
   }
 });
 
-// Resto de tu código para otras funcionalidades...
 app.post('/api/update-subscription', async (req, res) => {
   const { email, isSubscribed } = req.body;
 
@@ -142,7 +140,7 @@ app.post('/api/update-subscription', async (req, res) => {
   }
 });
 
-// Conexión a MongoDB
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Conectado a MongoDB'))
   .catch((err) => console.error('Error conectando a MongoDB:', err));
@@ -222,8 +220,8 @@ app.post('/api/create-payment', (req, res) => {
       description: 'Suscripción Retro-Arcade' 
     }],
     redirect_urls: {
-      return_url: 'http://localhost:3000/success',
-      cancel_url: 'http://localhost:3000/cancel'
+      return_url: 'http://hsa-games.com/success',
+      cancel_url: 'http://hsa-games.com/cancel'
     }
   };
 

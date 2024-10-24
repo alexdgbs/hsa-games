@@ -140,7 +140,7 @@ GameBoyAdvanceKeypad.prototype.pollGamepads = function() {
 		navigatorList = navigator.getGamepads();
 	}
 
-	// Let's all give a shout out to Chrome for making us get the gamepads EVERY FRAME
+	
 	if (navigatorList.length) {
 		this.gamepads = [];
 	}

@@ -18,7 +18,7 @@
         <p class="text-xs text-gray-600">{{ game.description }}</p> 
         <button
           v-if="isSubscribed || isAdmin"
-          class="mt-1 bg-slate-50 text-sky-800 text-xs"
+          class="mt-1 bg-white text-sky-800 text-xs"
           @click="downloadGame(game)"
         >
           Descargar
@@ -37,16 +37,15 @@ export default {
       isAdmin: false, 
       isSubscribed: false,
       games: [
-  { id: 1, name: 'Gran Turismo', cover: '/img/psp-granturismo.jpg', downloadLink: 'http://example.com/download/granturismo', description: 'Carreras' },
-  { id: 2, name: 'Tekken 6', cover: '/img/psp-tekken6.jpg', downloadLink: 'http://example.com/download/tekken6', description: 'Lucha' },
-  { id: 3, name: 'WWE 2011', cover: '/img/psp-wwe2011.png', downloadLink: 'https://drive.google.com/file/d/1MPz-unexl9FrkeUmHf2goF11DFlGsfac/view?usp=drive_link', description: 'Lucha' },
-  { id: 4, name: 'Fifa Street 2', cover: '/img/psp-fifastreet2.jpg', downloadLink: 'http://example.com/download/fifastreet2', description: 'Deportes' },
-  { id: 5, name: 'Midnight Club: Los Angeles', cover: '/img/psp-mcremix.jpg', downloadLink: 'http://example.com/download/midnightclub', description: 'Carreras' },
-  { id: 6, name: 'Syphon Filter: Dark Mirror', cover: '/img/psp-syphondarkmirror.jpg', downloadLink: 'http://example.com/download/syphondarkmirror', description: 'Acción' },
-  { id: 7, name: 'Silent Hill: Shattered Memories', cover: '/img/psp-shmemories.jpg', downloadLink: 'http://example.com/download/silenthill', description: 'Aventura' },
-  { id: 8, name: 'Monster Hunter Freedom Unite', cover: '/img/psp-monsterhunter.jpg', downloadLink: 'http://example.com/download/monsterhunter', description: 'Acción/RPG' },
-],
-
+        { id: 1, name: 'Gran Turismo', cover: '/img/psp-granturismo.jpg', downloadLink: 'https://drive.google.com/file/d/1tXIe_NEj682QdCLAg1SMDbw_fxhXx_OR/view?usp=sharing', description: 'Carreras' },
+        { id: 2, name: 'G.I. Joe: The Rise of Cobra', cover: '/img/psp-joe.jpg', downloadLink: 'https://drive.google.com/file/d/16J8J9mlBUnfhjguRRhz7vHmAsS0LTGPH/view?usp=sharing', description: 'Acción' },
+        { id: 3, name: 'Duke Nukem: Critical Mass (Jul 30, 2010 prototype)', cover: '/img/psp-dukenukemcriticalmass.jpg', downloadLink: 'https://drive.google.com/file/d/1tiR3azYz9U7ByhWQ4J6Nckeg9M0oD5zl/view?usp=sharing', description: 'Acción' },
+        { id: 4, name: 'Def Jam Fight for NY: The Takeover', cover: '/img/psp-defjam.png', downloadLink: 'https://drive.google.com/file/d/1WKE5Lr1S3MI6hUaLvZXQVk1kM6C9kreL/view?usp=sharing', description: 'Lucha' },
+        { id: 5, name: 'Midnight Club: Los Angeles', cover: '/img/psp-mcremix.jpg', downloadLink: 'https://drive.google.com/file/d/15j7y2E77oltV37cqRijRmmhauVB_XRDm/view?usp=sharing', description: 'Carreras' },
+        { id: 6, name: 'Little Big Planet', cover: '/img/psp-LittleBigPlanet.jpg', downloadLink: 'https://drive.google.com/file/d/1RZz4f0OZ_ChYixw3hWKOGulIEUstB5mF/view?usp=sharing', description: 'Plataformas' },
+        { id: 7, name: 'Silent Hill: Origins', cover: '/img/psp-silenthill.origins.png', downloadLink: 'https://drive.google.com/file/d/1mcLI4ruO9glsd_P3L-by527kNTDGVzLR/view?usp=sharing', description: 'Survival Horror / Aventura' },
+        { id: 8, name: 'Peggle', cover: '/img/Peggle.png', downloadLink: 'https://drive.google.com/file/d/14xeCREAbUCguZ28H5xlz3ilEKZRAIIbG/view?usp=sharing', description: 'Puzzle' },
+      ],
     };
   },
   mounted() {
@@ -60,8 +59,9 @@ export default {
   },
   methods: {
     async getUserInfo(email) {
+      const baseUrl = process.env.NODE_ENV === 'production' ? 'http://hsa-games.com' : 'http://localhost:3001';
       try {
-        const response = await fetch(`http://localhost:3001/api/user?email=${email}`); 
+        const response = await fetch(`${baseUrl}/api/user?email=${email}`); 
         if (!response.ok) {
           throw new Error('Error en la respuesta de la API');
         }
@@ -79,7 +79,6 @@ export default {
       el.style.transform = 'translateY(-20px)'; 
     },
     enter(el, done) {
-     
       el.offsetHeight; 
       el.style.transition = 'opacity 0.5s, transform 0.5s'; 
       el.style.opacity = 1; 
@@ -99,12 +98,13 @@ export default {
 .game-card {
   transition: background-color 0.3s, box-shadow 0.3s; 
   padding: 0.5rem; 
+  position: relative;
+  z-index: 1; 
 }
 
 .game-card:hover {
   background-color: #ffffff; 
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); 
-  
 }
 
 .game-image {
@@ -121,7 +121,6 @@ export default {
     transform: translateY(0);
   }
 }
-
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s, transform 0.5s; 

@@ -77,33 +77,33 @@ export default {
   },
   methods: {
     async handleSubmit() {
-      if (this.password !== this.confirmPassword) {
-        alert("Las contraseñas no coinciden.");
-        return;
-      }
-      try {
-        const response = await fetch('http://localhost:3001/api/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: this.email,
-            password: this.password,
-            acceptTerms: this.acceptTerms,
-          }),
-        });
+  if (this.password !== this.confirmPassword) {
+    alert("Las contraseñas no coinciden.");
+    return;
+  }
+  try {
+    const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://hsa-games.com' : 'http://localhost:3001'}/api/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: this.email,
+        password: this.password,
+        acceptTerms: this.acceptTerms,
+      }),
+    });
 
-        if (response.ok) {
-          this.$router.push('/login');
-        } else {
-          const data = await response.json();
-          alert(data.message || 'Error en el registro');
-        }
-      } catch (error) {
-        alert('Error de red. Inténtalo de nuevo.');
-      }
+    if (response.ok) {
+      this.$router.push('/login');
+    } else {
+      const data = await response.json();
+      alert(data.message || 'Error en el registro');
     }
+  } catch (error) {
+    alert('Error de red. Inténtalo de nuevo.');
+  }
+}
   }
 }
 </script>

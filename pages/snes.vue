@@ -18,7 +18,7 @@
         <p class="text-xs text-gray-600">{{ game.description }}</p>
         <button
           v-if="isSubscribed || isAdmin"
-          class="mt-1 bg-slate-50 text-sky-800 text-xs"
+          class="mt-1 bg-white text-sky-800 text-xs"
           @click="downloadGame(game)"
         >
           Descargar
@@ -31,102 +31,109 @@
 
 <script>
 export default {
-data() {
-  return {
-    isVisible: false,
-    isAdmin: false,
-    isSubscribed: false,
-    games: [
-      { id: 1, name: 'FIFA 96', cover: '/img/fifa-soccer-96.png', downloadLink: 'http://example.com/download/fifa-96', description: 'Deportes' },
-      { id: 2, name: 'Kirby Super Star', cover: '/img/kirby-super-star.png', downloadLink: 'http://example.com/download/kirby-super-star', description: 'Plataformas' },
-      { id: 3, name: 'Super Metroid', cover: '/img/super-metroid.jpg', downloadLink: 'http://example.com/download/super-metroid', description: 'Acción/Aventura' },
-      { id: 4, name: 'Mega Man Soccer', cover: '/img/mega-man-s-soccer.png', downloadLink: 'http://example.com/download/mega-man-soccer', description: 'Deportes' },
-      { id: 5, name: 'Star Wars 3', cover: '/img/super-star-wars-31438.png', downloadLink: 'http://example.com/download/star-wars-3', description: 'Acción/Aventura' },
-      { id: 6, name: 'Donkey Kong Country', cover: '/img/donkey-kong-country-competition-cartridge.png', downloadLink: 'http://example.com/download/donkey-kong-country', description: 'Plataformas' },
-      { id: 7, name: 'Untouchables', cover: '/img/untouchables-the.png', downloadLink: 'http://example.com/download/untouchables', description: 'Acción' },
-      { id: 8, name: 'Super Mario World', cover: '/img/super-mario-world.png', downloadLink: 'http://example.com/download/super-mario-world', description: 'Plataformas' },
-    ],
-  };
-},
-mounted() {
-  this.isVisible = true;
-  const emailCookie = document.cookie.split(';').find(item => item.trim().startsWith('email='));
-  if (emailCookie) {
-    const emailValue = emailCookie.split('=')[1];
-    this.isAdmin = emailValue === '8hsabitgames@gmail.com';
-    this.getUserInfo(emailValue);
-  }
-},
-methods: {
-  async getUserInfo(email) {
-    try {
-      const response = await fetch(`http://localhost:3001/api/user?email=${email}`);
-      if (!response.ok) {
-        throw new Error('Error en la respuesta de la API');
-      }
-      const userData = await response.json();
-      this.isSubscribed = userData.isSubscribed;
-    } catch (error) {
-      console.error('Error al obtener la información del usuario:', error);
+  data() {
+    return {
+      isVisible: false,
+      isAdmin: false,
+      isSubscribed: false,
+      games: [
+    { id: 1, name: 'Street Fighter II Turbo', cover: '/img/street-fighter-ii-turbo.webp', downloadLink: 'https://drive.google.com/file/d/1QL_R5yv_hTQpXt57TW1a0IVLCHrW0aB_/view?usp=sharing', description: 'Lucha' },
+    { id: 2, name: 'Chrono Trigger', cover: '/img/Chrono+Trigger.jpg', downloadLink: 'https://drive.google.com/file/d/1sei4p0EfzSwTLtRtRdQXIYfwXJCMf639/view?usp=drive_link', description: 'RPG' },
+    { id: 3, name: 'EarthBound', cover: '/img/EarthBound.jpg', downloadLink: 'https://drive.google.com/file/d/17lmqCPu9cTj5x_AUHHwKjz4vrivx6GfB/view?usp=sharing', description: 'RPG' },
+    { id: 4, name: 'Final Fantasy III', cover: '/img/Final+Fantasy+III.jpg', downloadLink: 'https://drive.google.com/file/d/1YueokRaXH-mzwBaL2Hyksrv5NVFSmyAj/view?usp=sharing', description: 'RPG' },
+    { id: 5, name: 'Super Mario All-Stars', cover: '/img/super-mario-all-stars.webp', downloadLink: 'https://drive.google.com/file/d/1_FwJAurQP7_GjGeB0RxjnuHz2ywEzw0q/view?usp=sharing', description: 'Plataformas' },
+    { id: 6, name: 'The Legend of Zelda: A Link to the Past', cover: '/img/legend-of-zelda-the-a-link-to-the-past.webp', downloadLink: 'https://drive.google.com/file/d/1qf6gao1MPlozBbcX-p4SY5Dtt-bESoko/view?usp=drive_link', description: 'Acción/Aventura' },
+    { id: 7, name: 'Super Metroid', cover: '/img/super-metroid.webp', downloadLink: 'https://drive.google.com/file/d/1wpzYXkOEoRJLrVorr06a71g30yMDkFog/view?usp=sharing', description: 'Acción/Aventura' },
+    { id: 8, name: 'Contra III: The Alien Wars', cover: '/img/contra-iii-the-alien-wars.webp', downloadLink: 'https://drive.google.com/file/d/1-tBZehpH5YfcFrPFvFODlRUgM4QK6aGv/view?usp=sharing', description: 'Acción' },
+],
+    };
+  },
+  mounted() {
+    this.isVisible = true;
+    const emailCookie = document.cookie.split(';').find(item => item.trim().startsWith('email='));
+    if (emailCookie) {
+      const emailValue = emailCookie.split('=')[1];
+      this.isAdmin = emailValue === '8hsabitgames@gmail.com';
+      this.getUserInfo(emailValue);
     }
   },
-  downloadGame(game) {
-    window.location.href = game.downloadLink;
-  },
-  beforeEnter(el) {
-    el.style.opacity = 0;
-    el.style.transform = 'translateY(-20px)';
-  },
-  enter(el, done) {
-    el.offsetHeight;
-    el.style.transition = 'opacity 0.5s, transform 0.5s';
-    el.style.opacity = 1;
-    el.style.transform = 'translateY(0)';
-    done();
-  },
+  methods: {
+    async getUserInfo(email) {
+  const baseUrl = process.env.NODE_ENV === 'production' ? 'http://hsa-games.com' : 'http://localhost:3001';
+  
+  try {
+    const response = await fetch(`${baseUrl}/api/user?email=${email}`);
+    if (!response.ok) {
+      throw new Error('Error en la respuesta de la API');
+    }
+    const userData = await response.json();
+    this.isSubscribed = userData.isSubscribed;
+  } catch (error) {
+    console.error('Error al obtener la información del usuario:', error);
+  }
 },
+    downloadGame(game) {
+      if (this.isSubscribed || this.isAdmin) {
+        window.location.href = game.downloadLink; 
+      } else {
+        console.error('Acceso denegado: el usuario no está suscrito.');
+      }
+    },
+    beforeEnter(el) {
+      el.style.opacity = 0;
+      el.style.transform = 'translateY(-20px)';
+    },
+    enter(el, done) {
+      el.offsetHeight; 
+      el.style.transition = 'opacity 0.5s, transform 0.5s';
+      el.style.opacity = 1;
+      el.style.transform = 'translateY(0)';
+      done();
+    },
+  },
 };
 </script>
 
 <style scoped>
 .container {
-max-width: 1200px;
-animation: fadeIn 0.5s ease-in;
+  max-width: 1200px;
+  animation: fadeIn 0.5s ease-in;
 }
 
 .game-card {
-transition: background-color 0.3s, box-shadow 0.3s;
-padding: 0.5rem;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  padding: 0.5rem;
 }
 
 .game-card:hover {
-background-color: #ffffff;
-box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  background-color: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .game-image {
-transition: transform 0.3s;
+  transition: transform 0.3s;
 }
 
 @keyframes fadeIn {
-from {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-to {
-  opacity: 1;
-  transform: translateY(0);
-}
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .fade-enter-active, .fade-leave-active {
-transition: opacity 0.5s, transform 0.5s;
+  transition: opacity 0.5s, transform 0.5s;
 }
 
 .fade-enter, .fade-leave-to {
-opacity: 0;
-transform: translateY(-20px);
+  opacity: 0;
+  transform: translateY(-20px);
 }
 </style>
+
 
   

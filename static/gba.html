@@ -70,7 +70,7 @@
     #screen {
       width: 240px; 
       height: 160px; 
-      background-color: #000;
+      background-color: #252525;
       border-radius: 10px;
       image-rendering: pixelated; 
     }
@@ -88,7 +88,7 @@
       border: 3px solid #3e4f3b;
       padding: 10px 20px;
       margin: 5px;
-      font-size: 14px;
+      font-size: x-small;
       text-transform: uppercase;
       cursor: pointer;
       border-radius: 8px;
@@ -116,6 +116,15 @@
     
     footer a:hover {
       text-decoration: underline;
+    }
+    p{
+      margin-top: 20px;
+      font-size: 12px;
+      color: #333;
+      font-size: x-small;
+      text-align: center;
+      font-style:normal;
+
     }
   </style>
 
@@ -232,6 +241,7 @@
   </script>
 </head>
 <body>
+  
 
   <div id="navbar">
     <a href="/" class="back-link">
@@ -250,8 +260,12 @@
       <button class="bigbutton" onclick="screenshot()">Screenshot</button>
     </div>
   </div>
-  <footer>© 2024 HSA Games</footer>
-
+  <div>
+    <p><strong>Controles:</strong><br>Tecla A: Z<br>Tecla B: X<br>Tecla L: A<br>Tecla R: S<br>Keypad<br>
+    </p>
+  </div>
+  <footer><p>&copy; 2024 HSA Games</p>
+  </footer>
 </body>
 </html>
 

@@ -18,7 +18,7 @@
         <p class="text-xs text-gray-600">{{ game.description }}</p>
         <button
           v-if="isSubscribed || isAdmin"
-          class="mt-1 bg-slate-50 text-sky-800 text-xs"
+          class="mt-1 bg-white text-sky-800 text-xs"
           @click="downloadGame(game)"
         >
           Descargar
@@ -37,14 +37,14 @@ data() {
     isAdmin: false,
     isSubscribed: false,
     games: [
-      { id: 1, name: 'The Legend of Zelda: The Minish Cap', cover: '/img/gba-zelda.png', downloadLink: 'http://example.com/download/zelda', description: 'Aventura/RPG' },
-      { id: 2, name: 'Rayman: Hoodlums Revenge', cover: '/img/gba-rayman.png', downloadLink: 'http://example.com/download/rayman', description: 'Plataformas' },
-      { id: 3, name: 'Pokémon: Inclement Emerald', cover: '/img/gba-pokemon.png', downloadLink: 'http://example.com/download/pokemon', description: 'RPG' },
-      { id: 4, name: 'Dragon Ball Z: Taiketsu', cover: '/img/gba-dbztaiketsu.jpg', downloadLink: 'http://example.com/download/dbz', description: 'Lucha' },
-      { id: 5, name: 'Doom', cover: '/img/gba-doom.jpg', downloadLink: 'http://example.com/download/doom', description: 'Shooter' },
-      { id: 6, name: 'Super Mario Advance 2', cover: '/img/gba-supermario2.jpg', downloadLink: 'http://example.com/download/mario2', description: 'Plataformas' },
-      { id: 7, name: 'Mario Kart: Super Circuit', cover: '/img/gba-mariokart.jpg', downloadLink: 'http://example.com/download/mariokart', description: 'Carreras' },
-      { id: 8, name: 'Metroid: Fusion', cover: '/img/gba-metroidfusion.jpg', downloadLink: 'http://example.com/download/metroid', description: 'Acción/Aventura' },
+      { id: 1, name: 'Mother 3 (Fan Translation)', cover: '/img/mother-3-eng-translation-1-1.webp', downloadLink: 'http://example.com/download/zelda', description: 'Aventura/RPG' },
+      { id: 2, name: 'Golden Sun - The Lost Age', cover: '/img/golden-sun-the-lost-age.webp', downloadLink: 'https://drive.google.com/file/d/1D0z1EjAm9XbAe6VwUIgQh2oIyYUm9zwD/view?usp=sharing', description: 'Plataformas' },
+      { id: 3, name: 'Street Fighter Alpha 3 (Fan Translation)', cover: '/img/streetfalpha.jpeg', downloadLink: 'https://drive.google.com/file/d/1hqOXqM-vbp4s-yUzHgEwwqAvTH0Gay9k/view?usp=sharing', description: 'Lucha' },
+      { id: 4, name: 'Dragon Ball Z: Taiketsu', cover: '/img/gba-dbztaiketsu.jpg', downloadLink: 'https://drive.google.com/file/d/1r1Mip0I7Zg2NKmxbV5FJ8PsQL-jgB5dk/view?usp=sharing', description: 'Lucha' },
+      { id: 5, name: 'Doom', cover: '/img/gba-doom.jpg', downloadLink: 'https://drive.google.com/file/d/16Q6utfA6-MkTvNzdqbYZq_V03k3HZEm9/view?usp=sharing', description: 'Shooter' },
+      { id: 6, name: 'Super Mario Advance 2', cover: '/img/gba-supermario2.jpg', downloadLink: 'https://drive.google.com/file/d/1oMW_NEO5VFrzzmAeXYMHUvNEa88t5qeU/view?usp=sharing', description: 'Plataformas' },
+      { id: 7, name: 'Mario Kart: Super Circuit', cover: '/img/gba-mariokart.jpg', downloadLink: 'https://drive.google.com/file/d/1fkdwL4IDXI0rExHTWCrTmMS_ZJdlm3vm/view?usp=sharing', description: 'Carreras' },
+      { id: 8, name: 'Metroid: Fusion', cover: '/img/gba-metroidfusion.jpg', downloadLink: 'https://drive.google.com/file/d/1sIxtP5RiYtFDsZUeEaitz1SJY5rh0HHs/view?usp=drive_link', description: 'Acción/Aventura' },
     ],
   };
 },
@@ -59,17 +59,19 @@ mounted() {
 },
 methods: {
   async getUserInfo(email) {
-    try {
-      const response = await fetch(`http://localhost:3001/api/user?email=${email}`);
-      if (!response.ok) {
-        throw new Error('Error en la respuesta de la API');
-      }
-      const userData = await response.json();
-      this.isSubscribed = userData.isSubscribed;
-    } catch (error) {
-      console.error('Error al obtener la información del usuario:', error);
+  const baseUrl = process.env.NODE_ENV === 'production' ? 'http://hsa-games.com' : 'http://localhost:3001';
+  
+  try {
+    const response = await fetch(`${baseUrl}/api/user?email=${email}`);
+    if (!response.ok) {
+      throw new Error('Error en la respuesta de la API');
     }
-  },
+    const userData = await response.json();
+    this.isSubscribed = userData.isSubscribed;
+  } catch (error) {
+    console.error('Error al obtener la información del usuario:', error);
+  }
+},
   downloadGame(game) {
     window.location.href = game.downloadLink;
   },

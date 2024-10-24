@@ -39,8 +39,13 @@ export default {
       const emailCookie = document.cookie.split(';').find(item => item.trim().startsWith('email='));
       if (emailCookie) {
         const emailValue = emailCookie.split('=')[1];
+        
+        const baseUrl = process.env.NODE_ENV === 'production' 
+          ? 'http://hsa-games.com' 
+          : 'http://localhost:3001';
+
         try {
-          const response = await fetch(`http://localhost:3001/api/user?email=${emailValue}`);
+          const response = await fetch(`${baseUrl}/api/user?email=${emailValue}`);
           if (response.ok) {
             const userData = await response.json();
             this.isSubscribed = userData.isSubscribed; 
@@ -72,8 +77,12 @@ export default {
             const emailCookie = document.cookie.split(';').find(item => item.trim().startsWith('email='));
             const emailValue = emailCookie ? emailCookie.split('=')[1] : null;
 
+            const baseUrl = process.env.NODE_ENV === 'production' 
+              ? 'http://hsa-games.com' 
+              : 'http://localhost:3001';
+
             if (emailValue) {
-              const response = await fetch('http://localhost:3001/api/update-subscription', {
+              const response = await fetch(`${baseUrl}/api/update-subscription`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -102,8 +111,12 @@ export default {
         const emailCookie = document.cookie.split(';').find(item => item.trim().startsWith('email='));
         const emailValue = emailCookie ? emailCookie.split('=')[1] : null;
 
+        const baseUrl = process.env.NODE_ENV === 'production' 
+          ? 'http://hsa-games.com' 
+          : 'http://localhost:3001';
+
         if (emailValue) {
-          const response = await fetch('http://localhost:3001/api/update-subscription', {
+          const response = await fetch(`${baseUrl}/api/update-subscription`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -168,3 +181,4 @@ h3 {
   z-index: 50; 
 }
 </style>
+

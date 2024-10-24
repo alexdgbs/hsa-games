@@ -2,16 +2,18 @@
   <div>
     <transition name="fade">
       <div
-        class="bg-slate-50 text-black py-1 hidden md:block"
+        class="bg-red-500 text-black py-1 hidden md:block"
         v-if="isSubscribed"
         :class="{'fade-in': isSubscribed, 'fade-out': !isSubscribed}"
       >
         <div class="container mx-auto flex flex-col items-center text-center">
-          <span class="text-xs font-bold text-red-500 transition duration-300 ease-in-out transform hover:scale-110">Prueba nuestro nuevo emulador</span>
+          <span class="text-xs font-bold text-white transition duration-300 ease-in-out transform hover:scale-110">Prueba nuestro nuevo emulador</span>
           <div></div>
           <div class="mt-1">
-            <a href="/gba.html" class="text-xs font-bold transition duration-300 ease-in-out transform hover:scale-110">HSA Advance</a>
-          </div>
+          <a href="/gba.html" class="text-xs font-bold transition duration-300 ease-in-out transform hover:scale-110 bg-red-400 text-white rounded-md px-2 py-1 shadow hover:bg-red-300">
+          HSA Advance
+          </a>
+        </div>
         </div>
       </div>
     </transition>
@@ -40,7 +42,7 @@
               </svg>
             </button>
 
-            <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" style="z-index: 999;">
               <div v-if="isAuthenticated" class="px-4 py-2 text-gray-700 text-xs border-b border-gray-200">
                 {{ email }}
               </div>
@@ -124,8 +126,11 @@ export default {
       const emailCookie = document.cookie.split(';').find(item => item.trim().startsWith('email='));
       if (emailCookie) {
         const emailValue = emailCookie.split('=')[1];
+        console.log('Entorno actual:', process.env.NODE_ENV);
+        const baseUrl = process.env.NODE_ENV === 'production' ? 'http://hsa-games.com' : 'http://localhost:3001';
+        console.log('URL de la API:', baseUrl);
         try {
-          const response = await fetch(`http://localhost:3001/api/user?email=${emailValue}`);
+          const response = await fetch(`${baseUrl}/api/user?email=${emailValue}`);
           if (response.ok) {
             const userData = await response.json();
             this.isSubscribed = userData.isSubscribed; 
@@ -161,5 +166,3 @@ export default {
   transform: translateY(0); 
 }
 </style>
-
-

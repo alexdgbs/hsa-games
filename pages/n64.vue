@@ -18,7 +18,7 @@
           <p class="text-xs text-gray-600">{{ game.description }}</p> 
           <button
             v-if="isSubscribed || isAdmin"
-            class="mt-1 bg-slate-50 text-sky-800 text-xs"
+            class="mt-1 bg-white text-sky-800 text-xs"
             @click="downloadGame(game)"
           >
             Descargar
@@ -37,14 +37,14 @@
         isAdmin: false,
         isSubscribed: false,
         games: [
-  { id: 1, name: 'Super Smash Bros', cover: '/img/super-smash-bros.png', description: 'Lucha', downloadLink: 'http://example.com/download/super-smash-bros' },
-  { id: 2, name: 'Super Mario 64', cover: '/img/Super_Mario_64_29.png', description: 'Plataformas', downloadLink: 'http://example.com/download/super-mario-64' },
-  { id: 3, name: 'Mario Kart 64', cover: '/img/MK64_Cover.png', description: 'Carreras', downloadLink: 'http://example.com/download/mario-kart-64' },
-  { id: 4, name: 'Donkey Kong 64', cover: '/img/na.png', description: 'Aventura', downloadLink: 'http://example.com/download/donkey-kong-64' },
-  { id: 5, name: 'Mortal Kombat 4', cover: '/img/mortal-kombat-4.png', description: 'Lucha', downloadLink: 'http://example.com/download/mortal-kombat-4' },
-  { id: 6, name: 'FIFA 99', cover: '/img/fifa-99.png', description: 'Deportes', downloadLink: 'http://example.com/download/fifa-99' },
-  { id: 7, name: 'Fighting Force 64', cover: '/img/fighting-force-64.png', description: 'Acción', downloadLink: 'http://example.com/download/fighting-force-64' },
-  { id: 8, name: 'NBA Jam 2000', cover: '/img/nba-jam-2000.png', description: 'Deportes', downloadLink: 'http://example.com/download/nba-jam-2000' },
+  { id: 1, name: 'Jet Force Gemini', cover: '/img/jet-force-gemini.webp', description: 'Aventuras', downloadLink: 'https://drive.google.com/file/d/1Tzl8CtlaN00RJ_SRKsfIour88DM3gtqA/view?usp=sharing' },
+  { id: 2, name: 'Body Harvest', cover: '/img/body-harvest.webp', description: 'Acción', downloadLink: 'https://drive.google.com/file/d/1ePA3XfwGu41INWgrOG1wUQSKJJ5tQbtF/view?usp=sharing' },
+  { id: 3, name: 'Space Station Silicon Valley', cover: '/img/space-station-silicon-valley.webp', description: 'Plataformas', downloadLink: 'https://drive.google.com/file/d/1jLjMFyazzmieXVCCNl53TZ7IdkR_OWlp/view?usp=sharing' },
+  { id: 4, name: 'Blast Corps', cover: '/img/blast-corps-v1-1.webp', description: ' Estrategia', downloadLink: 'https://drive.google.com/file/d/1Dp5jxtrT10vN9Ia84To5mC3cf5dPn8gp/view?usp=sharing' },
+  { id: 5, name: 'Forsaken 64', cover: '/img/forsaken-64.webp', description: 'Shooter', downloadLink: 'https://drive.google.com/file/d/17-GmMV5qQWnjlRSjJHytUgjXjPifh_X2/view?usp=sharing' },
+  { id: 6, name: 'Turok: Dinosaur Hunter', cover: '/img/turok-dinosaur-hunter-v1-2.webp', description: 'Shooter', downloadLink: 'https://drive.google.com/file/d/1qUJMbZLSb52f66r-5R4MuN1FF25HOAfu/view?usp=sharing' },
+  { id: 7, name: 'Shadow Man', cover: '/img/shadow-man.webp', description: 'Acción', downloadLink: 'https://drive.google.com/file/d/1Z54qeeLentle9rYi6QitUqa_5JGOuBXu/view?usp=sharing' },
+  { id: 8, name: 'Extreme-G', cover: '/img/extreme-g.webp', description: 'Carreras', downloadLink: 'https://drive.google.com/file/d/1H_db9KDB3QT6Y4quUOwuErcwPhOsRPjV/view?usp=sharing' },
 ],
 
 
@@ -61,17 +61,19 @@
     },
     methods: {
       async getUserInfo(email) {
-        try {
-          const response = await fetch(`http://localhost:3001/api/user?email=${email}`); 
-          if (!response.ok) {
-            throw new Error('Error en la respuesta de la API');
-          }
-          const userData = await response.json();
-          this.isSubscribed = userData.isSubscribed; 
-        } catch (error) {
-          console.error('Error al obtener la información del usuario:', error);
-        }
-      },
+  const baseUrl = process.env.NODE_ENV === 'production' ? 'http://hsa-games.com' : 'http://localhost:3001';
+  
+  try {
+    const response = await fetch(`${baseUrl}/api/user?email=${email}`);
+    if (!response.ok) {
+      throw new Error('Error en la respuesta de la API');
+    }
+    const userData = await response.json();
+    this.isSubscribed = userData.isSubscribed;
+  } catch (error) {
+    console.error('Error al obtener la información del usuario:', error);
+  }
+},
       downloadGame(game) {
         window.location.href = game.downloadLink; 
       },
