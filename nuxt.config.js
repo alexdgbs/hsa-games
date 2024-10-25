@@ -13,46 +13,36 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
     ],
-    script: [
-      
-    ]
+    script: []
   },
 
+  css: [],
 
-  css: [
-   
-  ],
-
-  plugins: [
-   
-  ],
-
+  plugins: [],
 
   components: true,
 
-  
   buildModules: [
-    '@nuxt/postcss8', 
-    '@nuxtjs/tailwindcss', 
+    '@nuxt/postcss8',
+    '@nuxtjs/tailwindcss',
   ],
 
-  
-  modules: [
-  
-  ],
+  modules: [],
 
+  build: {},
+
+  target: 'static',
   
-  build: {
- 
+  generate: {
+    dir: 'dist',
   },
 
-
   serverMiddleware: [
-    { path: '/api', handler: '~/server/server.js' } 
+    { path: '/api', handler: '~/server/server.js' }
   ],
 
   server: {
-    port: 3000, 
-    host: 'localhost' 
+    port: 3000,
+    host: 'localhost'
   }
 }
